@@ -8,11 +8,7 @@ import { create } from 'express-handlebars';
 import passport from 'passport';
 import initalizatePassport from './config/passport.config.js';
 import MongoStore from 'connect-mongo';
-import sessionRouter from './routes/session.router.js';
-import sessionLogin from './routes/sessionLogin.routes.js';
-import productRouter from './routes/products.routes.js';
-import cartRouter from './routes/carts.routes.js';
-import cookieRouter from '../src/routes/cookie.routes.js';
+import indexRouter from './routes/index.routes.js';
 import mongoose from 'mongoose';
 
 
@@ -60,12 +56,9 @@ initalizatePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/public',express.static(__dirname + '/public')) // Concateno rutaswww
-app.use('/', cookieRouter)
-app.use('/', sessionRouter)
-app.use('/api/sessions', sessionLogin)
-app.use('/api/products',productRouter)
-app.use('/api/carts',cartRouter)
+ // Concateno rutaswww
+app.use('/', indexRouter)
+
 app.get('/',(req,res)=>{
     res.status(200).send("Hola desde Inicio")})
 

@@ -10,6 +10,7 @@ import initalizatePassport from './config/passport.config.js';
 import MongoStore from 'connect-mongo';
 import indexRouter from './routes/index.routes.js';
 import mongoose from 'mongoose';
+import cors from 'cors'
 
 
 
@@ -17,15 +18,13 @@ import mongoose from 'mongoose';
 const app = express();
 const PORT = 8080;
 const hbs = create();
+app.use(cors())
 //const fileStore = FileStore(session);
 
 app.use(express.json())
 
 
 
-app.engine('handlebars', hbs.engine)
-app.set('view engine', 'handlebars')
-app.set('views', path.join(__dirname, 'views')) //Concateno evitando erroes de / o \
 
 
 app.use(cookieParser("CoderSecret")) // Si Agrego contraseña "Firmo" las Cookies
@@ -55,7 +54,10 @@ mongoose.connect(MGDB)
 initalizatePassport()
 app.use(passport.initialize())
 app.use(passport.session())
-
+app.engine('handlebars', hbs.engine)
+app.set('view engine', 'handlebars')
+app.set('views', path.join(__dirname, 'views')) //Concateno evitando erroes de / o \
+app.use(express.static(path.join(__dirname, "public")))
  // Concateno rutaswww
 app.use('/', indexRouter)
 

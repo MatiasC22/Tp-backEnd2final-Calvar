@@ -1,3 +1,28 @@
-<h1>
-    <a href="/api/sessions/github">Ingresar con Github</a>
-</h1>
+<div class="conteiner d-flex justify-content-center aling-items-center vh-120">
+    <div class="card p-4 shadow-sm cardLogin">
+        <h2 class="text-center">Iniciar Sesion</h2>
+            <form action="/api/sessions/login" id="loginForm" method="post">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <button type="sudmit" class="btn btn-primary w-100">
+                    Iniciar Sesion
+                </button>
+            </form>
+            <div class="text-center mt-3">
+                <button class="btn btn-dark w-100">
+                    <a href="/api/sessions/github">Ingresar con Github</a>
+                </button>
+                <button class="btn btn-ligth w-100">
+                    <a href="/api/sessions/viewregister"> Registrate</a>
+                </button>                
+            </div>
+    </div>
+</div>
+
+

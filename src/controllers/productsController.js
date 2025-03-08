@@ -11,14 +11,14 @@ export const getProducts = async (req,res)=>{
         const ordQuery = metOrder !== undefined ? {metOrder: ord}: {};
 
         const prods = await productModel.paginate(filQuery, {limit: limi, page: pag, ordQuery, lean: true}) 
-        console.log(prods);
+        //console.log(prods);
 
         prods.pageNumbers = Array.from({length: prods.totalPages}, (_, i)=> ({
             number: i+ 1,
             isCurrent: i+1 === prods.page
         }))
 
-        console.log(prods);
+        //console.log(prods);
         
         res.status(200).render('templates/home',  { prods, limit: limi })
 

@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     formLogin.addEventListener('submit', async (e) => {
         e.preventDefault()
 
+        console.log(e.target)
+
         const formData = new FormData(e.target)
         const userData = Object.fromEntries(formData)
 
@@ -20,16 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json()
 
-            if (data?.message == "Usuario logueado") {
-                document.cookie = `coderCookie=${data.token}; path=/;`
-                window.location.href = "/"
+            if (data?.message == "Usuario logueado correctamente") {
+                
+                e.target.reset()
+                window.location.href = "http://localhost:8080/api/products"
             } else {
-                const errorTxt = await response.json()
-                console.log(errorTxt);
+                // const errorTxt = await response.json()
+                // console.log(errorTxt);
+                console.log(data);
             }
 
         } catch (e) {
-            console.log(e)
+            console.log(e);
 
         }
     })

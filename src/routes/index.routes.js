@@ -8,7 +8,7 @@ import { __dirname } from "../path.js";
 
 const indexRouter = express.Router()
 
-//indexRouter.use('/public',express.static(__dirname + '/public'))
+
 indexRouter.use('/', cookieRouter)
 indexRouter.use('/', sessionRouter)
 indexRouter.use('/api/sessions', sessionLogin)

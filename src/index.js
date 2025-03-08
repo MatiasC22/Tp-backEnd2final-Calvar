@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import {MGDB} from './servidor.js';
 import express from 'express';
 import path from 'path';
@@ -16,8 +17,9 @@ import cors from 'cors'
 
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const hbs = create();
+
 app.use(cors())
 //const fileStore = FileStore(session);
 
@@ -27,17 +29,17 @@ app.use(express.json())
 
 
 
-app.use(cookieParser("CoderSecret")) // Si Agrego contraseña "Firmo" las Cookies
+app.use(cookieParser(process.env.SECRET_COOKIE)) // Si Agrego contraseña "Firmo" las Cookies
 app.use(session({
     // ttl:   Tiempo de vida de la sesion en segundos
     // retries:  Cantidad de veces que el servidor va a intentar leer el Archivo
     //store: new fileStore({path: './src/sessions', ttl: 60, retries: 1}),
     store: MongoStore.create({
-        mongoUrl: MGDB,
+        mongoUrl: process.env.URL_MONGO,
         mongoOptions: {},
         ttl: 15,
     }),
-    secret: 'SessionSecret',
+    secret: process.env.SECRET_SESSION,
     resave: true,//Perminete manterner la sesion activa en caso de que 
     //la sesion se mantenga inactiva. Si se deja en false, la sesion 
     // Morira en caso de que exista cierto tienpo de inactividad 
@@ -47,7 +49,7 @@ app.use(session({
     //consulta.
 }))
 
-mongoose.connect(MGDB)
+mongoose.connect(process.env.URL_MONGO)
     .then(()=>{console.log("DB is connected")})
     .catch((e)=>{console.log("Error al Conectar DB: ", e)})
 

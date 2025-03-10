@@ -37,11 +37,11 @@ export const purchaseCartService = async (cartId) => {
             return { status: 400, data: { message: "No hay stock suficiente para realizar la compra" } };
         }
 
-        // Generar el ticket sin uuid, Mongo crea el _id automáticamente
+        
         const ticket = await ticketModel.create({
             purchase_datetime: new Date(),
             amount: totalAmount,
-            purchaser: "usuario@email.com", // Aquí deberías obtener el email real del usuario autenticado
+            purchaser: "usuario@email.com", 
         });
 
         cart.products = cart.products.filter((item) => unavailableProducts.includes(item.id_prod._id));

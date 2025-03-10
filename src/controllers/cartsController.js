@@ -1,4 +1,5 @@
 import cartModel from "../models/cart.js";
+import { purchaseCartService } from "../controllers/ticketController.js";
 
 export const getCart = async (req,res) => {
     try {
@@ -12,6 +13,16 @@ export const getCart = async (req,res) => {
         res.status(500).render('templates/error', {e})
     }
 }
+
+export const purchaseCart = async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const response = await purchaseCartService(cartId);
+        res.status(response.status).send(response.data);
+    } catch (e) {
+        res.status(500).render("templates/error", { e });
+    }
+};
 
 export const createCart = async (req,res) => {
     try {

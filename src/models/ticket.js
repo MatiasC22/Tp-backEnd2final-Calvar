@@ -1,6 +1,10 @@
-import mongoose from "mongoose";
+import {Schema, model} from "mongoose";
 
-const ticketSchema = new mongoose.Schema({
+const ticketSchema = new Schema({
+    code: {
+        type: String,
+        required: true
+    },
     purchase_datetime: {
         type: Date,
         default: Date.now
@@ -12,9 +16,13 @@ const ticketSchema = new mongoose.Schema({
     purchaser: {
         type: String,
         required: true
+    },
+    products: {
+        type: Object
     }
+
 });
 
-const Ticket = mongoose.model("Ticket", ticketSchema);
+const ticketModel = model("ticket", ticketSchema);
 
-export default Ticket;
+export default ticketModel;

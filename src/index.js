@@ -37,7 +37,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.URL_MONGO,
         mongoOptions: {},
-        ttl: 15,
+        ttl: 15000000,
     }),
     secret: process.env.SECRET_SESSION,
     resave: true,//Perminete manterner la sesion activa en caso de que 

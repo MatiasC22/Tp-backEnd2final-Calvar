@@ -5,7 +5,7 @@ import productModel from "../models/product.js";
 
 export const getCart = async (req,res) => {
     try {
-        const cartId = req.params.cartId
+        const cartId = req.params.cid
         const cart = await cartModel.findOne({_id: cartId})
         if(cart)
             res.status(200).send(cart)
@@ -16,15 +16,7 @@ export const getCart = async (req,res) => {
     }
 }
 
-export const purchaseCart = async (req, res) => {
-    try {
-        const cartId = req.params.cid;
-        const response = await purchaseCartService(cartId);
-        res.status(response.status).send(response.data);
-    } catch (e) {
-        res.status(500).render("templates/error", { e });
-    }
-};
+
 
 export const createCart = async (req,res) => {
     try {
@@ -140,34 +132,41 @@ export const checkout = async(req,res) => {
     try {
         const cartId = req.params.cid
         const cart = await cartModel.findById(cartId)
+        const prodStockNull= []
 
         if(cart){
             //Ver si Todos los productos tienen stock suficiente
-            cart.products.forEach(async()=>{
+            for (const prod of cart.products) {
                 let producto = await productModel.findById(prod.id_prod)
                 if(producto.stock - prod.quantity < 0){                
                     prodStockNull.push(producto.id)
-                }                
-            })
+                }
+            }            
 
             if(prodStockNull.length === 0){ //Solamentefinalizo compra si No ahi productos sin stock
-                const aux = [...cart.products]
+                
 
-                let totalAmount
+                //Descuento el stock de cada uno de los productos y calculo el total de compra
+                let totalAmount = 0 ;
 
-                cart.products.forEach((prod)=>{
-                    const prod = productModel.findById(prod.id_prod)
-                    let stock = prod.stock
-                    prod.stock =  stock -prod.quantity
-                    await prod.save()
+                for (const prod of cart.products) {
+                    const producto = await productModel.findById(prod.id_prod);
+                    if(producto){
+                      producto.stock -= prod.quantity;                    
+                    totalAmount +=  producto.price * prod.quantity;
+                    await producto.save();  
+                    }
                     
-                })
+                }
+                
+                
                 const newTicket = await ticketModel.create({
                     code: crypto.randomUUID(),
                     purchaser: req.user.email,
-                    amount: 3,
+                    amount: totalAmount,
                     products: cart.products
                 })
+
                 await cartModel.findByIdAndUpdate(cartId, {products: []})
                 res.status(200).send(newTicket)
 

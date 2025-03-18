@@ -1,5 +1,4 @@
 import cartModel from "../models/cart.js";
-import { purchaseCartService } from "../controllers/ticketController.js";
 import ticketModel from "../models/ticket.js";
 import productModel from "../models/product.js";
 
@@ -186,6 +185,6 @@ export const checkout = async(req,res) => {
             res.status(404).send({message: "Carrito no existe"})
         }
     } catch (e) {
-        res.status.send({message: e})
+        res.status(500).render('templates/error', { message: "Ocurrió un problema en el proceso de compra." });
     }
 }

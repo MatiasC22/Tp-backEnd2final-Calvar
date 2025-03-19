@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import {MGDB} from './servidor.js';
 import express from 'express';
 import path from 'path';
 import { __dirname } from './path.js';
